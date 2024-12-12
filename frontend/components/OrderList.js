@@ -19,50 +19,53 @@ export default function OrderList() {
       ? history
       : history.filter((order) => order.size === selectedSize);
 
-  if (status === "loading") {
-    return (
-      <div id="orderList">
-        <h2>Pizza Orders</h2>
-        <div>Loading orders...</div>
-      </div>
-    );
-  }
-
   return (
     <div id="orderList">
       <h2>Pizza Orders</h2>
+      {status === "loading" && <div>Loading orders...</div>}
       {status === "failed" && <div>Error: {error}</div>}
-      <ol>
-        {filteredOrders.map((order) => {
-          console.log("order", order);
-          return (
+      {status !== "loading" && (
+        <ol>
+          {filteredOrders.map((order) => (
             <li key={`order-${order.id}`}>
               <div>
-                {order.customer} orderd a size {order.size} with{" "}
-                {order.toppings && order.toppings.length} toppings
+                {order.customer} ordered a size {order.size} with{" "}
+                {order.toppings ? order.toppings.length : "no"} toppings
               </div>
             </li>
-          );
-        })}
-      </ol>
+          ))}
+        </ol>
+      )}
       <div id="sizeFilters">
         Filter by size:
-        {["All", "S", "M", "L"].map((size) => {
-          const className = `button-filter${
-            size === selectedSize ? " active" : ""
-          }`;
-          console.log(`filterBtn${size}`);
-          return (
-            <button
-              data-testid={`filterBtn${size}`}
-              className={className}
-              onClick={() => dispatch(setSelectedSize(size))}
-              key={size}
-            >
-              {size}
-            </button>
-          );
-        })}
+        <button
+          data-testid="filterBtnAll"
+          className={`button-filter${selectedSize === "All" ? " active" : ""}`}
+          onClick={() => dispatch(setSelectedSize("All"))}
+        >
+          All
+        </button>
+        <button
+          data-testid="filterBtnS"
+          className={`button-filter${selectedSize === "S" ? " active" : ""}`}
+          onClick={() => dispatch(setSelectedSize("S"))}
+        >
+          S
+        </button>
+        <button
+          data-testid="filterBtnM"
+          className={`button-filter${selectedSize === "M" ? " active" : ""}`}
+          onClick={() => dispatch(setSelectedSize("M"))}
+        >
+          M
+        </button>
+        <button
+          data-testid="filterBtnL"
+          className={`button-filter${selectedSize === "L" ? " active" : ""}`}
+          onClick={() => dispatch(setSelectedSize("L"))}
+        >
+          L
+        </button>
       </div>
     </div>
   );

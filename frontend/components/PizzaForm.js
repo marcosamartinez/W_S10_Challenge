@@ -50,7 +50,6 @@ export default function PizzaForm() {
       console.log("result", result);
 
       if (submitOrder.fulfilled.match(result)) {
-        // Clear form on successful submission
         setFormData({
           fullName: "",
           size: "",
